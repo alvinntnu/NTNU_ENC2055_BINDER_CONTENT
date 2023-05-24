@@ -247,7 +247,9 @@ length(sentences)
 
 
 
-x <- c("It's a three-legged char.", "The book (you read) was quite boring!")
+
+
+x <- c("It's a three-legged chair.", "The book (you read) was quite boring!")
 
 
 
