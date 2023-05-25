@@ -117,11 +117,18 @@ output[895]
 ## }
 ## 
 
+## define function
 my_center <- function(x) {
-  x - mean(x)
+  (x - mean(x))/sd(x)
 }
 
+## apply function via map()
+map(exams.list, my_center)
+
+## try different return structures
 map_df(exams.list, my_center)
+
+
 
 
 
