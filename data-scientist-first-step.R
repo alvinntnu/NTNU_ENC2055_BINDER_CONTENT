@@ -240,15 +240,36 @@ sum_sex_age %>%
            color="white",
            position = position_dodge(0.8))
 
-
-
-
-
+## Explore the data
 nobel_winners %>%
   filter(Birth_Country == "united states of america") %>%
   select(Year, Category, Full_Name, Birth_City)
 
+nobel_winners %>%
+  filter(Birth_Country == "united states of america") %>%
+  mutate(Birth_State = str_replace(Birth_City, "([^,]+), ([a-z]+)$", "\\2")) %>%
+  group_by(Birth_State) %>%
+  summarize(N = n()) %>%
+  arrange(desc(N), Birth_State) -> sum_state
+
+sum_state
+
+sum_state %>%
+  mutate(Birth_State = fct_reorder(str_to_upper(Birth_State), N)) %>%
+  ggplot(aes(Birth_State, N, fill = N)) +
+  geom_col() +
+  coord_flip() +
+  scale_fill_viridis_c(guide=F) +
+  labs(y = "Number of Winners", x = "Winner Birth States")
 
 
+
+
+## Loading mapping table
 US_states <- read_csv("demo_data/US-states.csv")
 US_states
+
+## Joining tables
+sum_state %>%
+  mutate(Birth_State = str_to_upper(Birth_State)) %>%
+  left_join(US_states, by = c("Birth_State" = "Code"))
